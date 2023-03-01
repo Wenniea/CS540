@@ -36,7 +36,7 @@ def z_vector(X):
 
 
 def inverse():
-    return (np.linalg.inv(Z))
+    return np.linalg.inv(Z)
 
 
 def pseudo_inverse():
@@ -48,9 +48,6 @@ def pseudo_inverse():
 def beta():
     B = np.dot(PI, Y)
     return B
-
-
-x, y = load_data("toy.csv")
 
 
 def y_test():
@@ -77,41 +74,47 @@ def limitation():
     return prediction
 
 
-plt.plot(x, y)
-plt.xlabel("Year")
-plt.ylabel("Number of frozen days")
-plt.show()
+if __name__ == "__main__":
+    x, y = load_data(sys.argv[1])
 
-X = x_vector(x)
-print("Q3a:")
-print(X)
+    plt.plot(x, y)
+    plt.xlabel("Year")
+    plt.ylabel("Number of frozen days")
+    plt. savefig("plot.jpg")
 
-Y = y_vector(y)
-print("Q3b:")
-print(Y)
+    X = x_vector(x)
+    print("Q3a:")
+    print(X)
 
-Z = z_vector(X)
-print("Q3c:")
-print(Z)
+    Y = y_vector(y)
+    print("Q3b:")
+    print(Y)
 
-I = inverse()
-print("Q3d:")
-print(I)
+    Z = z_vector(X)
+    print("Q3c:")
+    print(Z)
 
-PI = pseudo_inverse()
-print("Q3e:")
-print(PI)
+    I = inverse()
+    print("Q3d:")
+    print(I)
 
-hat_beta = beta()
-print("Q3f:")
-print(hat_beta)
+    PI = pseudo_inverse()
+    print("Q3e:")
+    print(PI)
 
-print("Q4: " + str(y_test()))
+    hat_beta = beta()
+    print("Q3f:")
+    print(hat_beta)
 
-sign, explanation = interpretation()
-print("Q5a: " + sign)
-print("Q5b: " + explanation)
+    print("Q4: " + str(y_test()))
 
-print("Q6a: " + str(limitation()))
-print("Q6b: x* is not a compelling prediction based on the trend because it seems way too fast. "
-      "This probably happened because the data set is too small")
+    sign, explanation = interpretation()
+    print("Q5a: " + sign)
+    print("Q5b: " + explanation)
+
+    print("Q6a: " + str(limitation()))
+    print(
+        "Q6b: x* is a compelling prediction based on the trend because the head-beta is a negative "
+        "number, which means the number of frozen days is decreasing. And since the graph is going "
+        "in a downward trend, and it's currently on around 70 days, by 2455 it's possible to have "
+        "no frozen days at all.")
