@@ -80,7 +80,7 @@ if __name__ == "__main__":
     plt.plot(x, y)
     plt.xlabel("Year")
     plt.ylabel("Number of frozen days")
-    plt. savefig("plot.jpg")
+    plt.savefig("plot.jpg")
 
     X = x_vector(x)
     print("Q3a:")
