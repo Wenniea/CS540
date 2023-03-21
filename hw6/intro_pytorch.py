@@ -72,13 +72,13 @@ def train_model(model, train_loader, criterion, T):
     RETURNS:
         None
     """
-    correct = 0
-    total = 0
 
     opt = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
     for epoch in range(T):
         running_loss = 0
         model.train()
+        correct = 0
+        total = 0
         for i, data in enumerate(train_loader, 0):
             inputs, labels = data
 
@@ -91,16 +91,12 @@ def train_model(model, train_loader, criterion, T):
 
             running_loss += loss.item() * 64
 
-        with torch.no_grad():
-            for data in test_loader:
-                images, labels = data
-                outputs = model(images)
-                _, predicted = torch.max(outputs.data, 1)
-                total += labels.size(0)
-                correct += (predicted == labels).sum().item()
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
 
-        print(f'Train Epoch: {epoch}   Accuracy: {correct}/{total}({100 * correct//total}%) Loss:'
-              f' {running_loss / 60000:.3f}')
+        print(f'Train Epoch: {epoch}   Accuracy: {correct}/{total}({100 * correct / total:.2f}%) '
+              f'Loss: {running_loss / 60000:.3f}')
 
 
 def evaluate_model(model, test_loader, criterion, show_loss=True):
@@ -117,22 +113,28 @@ def evaluate_model(model, test_loader, criterion, show_loss=True):
     """
 
     model.eval()
-    opt = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
     with torch.no_grad():
         total = 0
         correct = 0
-        for data, labels in test_loader:
+        running_loss = 0
+        for i, data in enumerate(test_loader, 0):
             inputs, labels = data
+
             outputs = model(inputs)
-            predicted = torch.round(outputs)
+            loss = criterion(outputs, labels)
+
+            running_loss += loss.item() * 64
+
+            _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
-            correct += (predicted == False).sum().item()
+            correct += (predicted == labels).sum().item()
+
         acc = correct / total
         if show_loss:
-
-            print(f'Accuracy: {acc}')
+            print(f'Loss: {running_loss / 60000:.4f}')
+            print(f'Accuracy: {100 * acc:.2f}%')
         else:
-            print(f'Accuracy: {acc}')
+            print(f'Accuracy: {100 * acc:.2f}%')
 
 
 def predict_label(model, test_images, index):
@@ -148,6 +150,16 @@ def predict_label(model, test_images, index):
     RETURNS:
         None
     """
+    with torch.no_grad():
+            logits = model(test_images[index].unsqueeze(0))
+            probs = F.softmax(logits, dim=1).squeeze()
+
+    top_probs, top_labels = torch.topk(probs,3)
+
+    for i in range (len(top_probs)):
+        prob_percent = top_probs[i] * 100
+        label = top_labels[i].item()
+        print(f'{label}: {prob_percent:.2f}%' )
 
 
 if __name__ == '__main__':
@@ -155,6 +167,7 @@ if __name__ == '__main__':
     Feel free to write your own test code here to exaime the correctness of your functions. 
     Note that this part will not be graded.
     '''
+    torch.manual_seed(0)
     criterion = nn.CrossEntropyLoss()
     train_loader = get_data_loader()
     print(type(train_loader))
@@ -163,4 +176,6 @@ if __name__ == '__main__':
     model = build_model()
     print(model)
     train_model(model, train_loader, criterion, 5)
-
+    evaluate_model(model, test_loader, criterion, show_loss=False)
+    test_images, test_labels = next(iter(test_loader))
+    predict_label(model, test_images, 1)
