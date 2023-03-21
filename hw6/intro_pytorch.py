@@ -150,16 +150,19 @@ def predict_label(model, test_images, index):
     RETURNS:
         None
     """
+    class_names = ['T - shirt / top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt'
+        , 'Sneaker', 'Bag', 'Ankle Boot']
+
     with torch.no_grad():
-            logits = model(test_images[index].unsqueeze(0))
-            probs = F.softmax(logits, dim=1).squeeze()
+        logits = model(test_images[index].unsqueeze(0))
+        probs = F.softmax(logits, dim=1).squeeze()
 
-    top_probs, top_labels = torch.topk(probs,3)
+    top_probs, top_labels = torch.topk(probs, 3)
 
-    for i in range (len(top_probs)):
+    for i in range(len(top_probs)):
         prob_percent = top_probs[i] * 100
-        label = top_labels[i].item()
-        print(f'{label}: {prob_percent:.2f}%' )
+        label = class_names[top_labels[i].item()]
+        print(f'{label}: {prob_percent:.2f}%')
 
 
 if __name__ == '__main__':
