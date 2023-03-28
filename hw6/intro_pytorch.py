@@ -7,7 +7,7 @@ from torchvision import datasets, transforms
 
 # Feel free to import other packages, if needed.
 # As long as they are supported by CSL machines.
-
+# https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html#sphx-glr-beginner-blitz-cifar10-tutorial-py
 def get_data_loader(training=True):
     transform = transforms.Compose([
         transforms.ToTensor(),
@@ -61,9 +61,8 @@ def train_model(model, train_loader, criterion, T):
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
-
         print(f'Train Epoch: {epoch} Accuracy: {correct}/{total}({100 * correct / total:.2f}%) '
-              f'Loss: {running_loss / 60000:.3f}')
+              f'Loss: {running_loss / total:.3f}')
 
 
 def evaluate_model(model, test_loader, criterion, show_loss=True):
@@ -84,17 +83,16 @@ def evaluate_model(model, test_loader, criterion, show_loss=True):
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
-
         accuracy = correct / total
         if show_loss:
-            print(f'Average loss: {running_loss / 60000:.4f}')
+            print(f'Average loss: {running_loss / total :.4f}')
             print(f'Accuracy: {100 * accuracy:.2f}%')
         else:
             print(f'Accuracy: {100 * accuracy:.2f}%')
 
 
 def predict_label(model, test_images, index):
-    class_names = ['T - shirt / top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt'
+    class_names = ['T-shirt/top', 'Trouser', 'Pullover', 'Dress', 'Coat', 'Sandal', 'Shirt'
         , 'Sneaker', 'Bag', 'Ankle Boot']
 
     with torch.no_grad():
@@ -120,7 +118,6 @@ if __name__ == '__main__':
     print(train_loader.dataset)
     test_loader = get_data_loader(False)
     model = build_model()
-    print(model)
     train_model(model, train_loader, criterion, 5)
     evaluate_model(model, test_loader, criterion, show_loss=True)
     test_images, test_labels = next(iter(test_loader))
