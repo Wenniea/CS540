@@ -3,6 +3,18 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/venv" />
+      <excludeFolder url="file://$MODULE_DIR$/hw7/data/miniplaces/train/h" />
+      <excludeFolder url="file://$MODULE_DIR$/hw7/data/miniplaces/train/i" />
+      <excludeFolder url="file://$MODULE_DIR$/hw7/data/miniplaces/train/k" />
+      <excludeFolder url="file://$MODULE_DIR$/hw7/data/miniplaces/train/l" />
+      <excludeFolder url="file://$MODULE_DIR$/hw7/data/miniplaces/train/m" />
+      <excludeFolder url="file://$MODULE_DIR$/hw7/data/miniplaces/train/o" />
+      <excludeFolder url="file://$MODULE_DIR$/hw7/data/miniplaces/train/p" />
+      <excludeFolder url="file://$MODULE_DIR$/hw7/data/miniplaces/train/r" />
+      <excludeFolder url="file://$MODULE_DIR$/hw7/data/miniplaces/train/s" />
+      <excludeFolder url="file://$MODULE_DIR$/hw7/data/miniplaces/train/t" />
+      <excludeFolder url="file://$MODULE_DIR$/hw7/data/miniplaces/train/v" />
+      <excludeFolder url="file://$MODULE_DIR$/hw7/data/miniplaces/train/y" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.10 (Assignments)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
