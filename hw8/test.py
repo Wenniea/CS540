@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import shutil
 from subprocess import Popen, PIPE, TimeoutExpired
 import filecmp
 import subprocess
@@ -12,7 +13,6 @@ def mkdir(name, rm=True):
     elif rm:
         shutil.rmtree(name)
         os.makedirs(name)
-
 
 def strip_list_of_str_from_control_chars(strlist):
     tmplist = []
